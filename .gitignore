@@ -1,2 +1,5 @@
 *.png
 libraries/*
+*.pyc
+*.jpg
+
