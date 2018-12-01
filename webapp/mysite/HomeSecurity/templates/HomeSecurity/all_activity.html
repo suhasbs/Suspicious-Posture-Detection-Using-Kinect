@@ -1,0 +1,66 @@
+{% extends 'HomeSecurity/index.html' %}
+{% load static %}
+
+
+{% block dashboard %}
+	
+
+<script type="text/javascript">
+	console.log("Sending req");
+	window.onhashchange = function() {
+	alert("Refreshing");
+	console.log('refreshing');
+ 	// window.location.href = '/security/all_activity';
+	// alert("Refreshing");
+	// window.location.reload();
+	}
+	function getImages(){
+	$.ajax({
+
+		url: "/security/all_activity/",
+		// data : {"product_id":product_id},
+		type: "GET",
+		// dataType: 'json',
+		success: function(json)
+		{
+			
+			console.log(json);
+			all_images = json.all_images;
+			var x;
+			console.log(all_images.length)
+			for(var i=0;i<all_images.length;i++){
+				all_images[i].date= all_images[i].date.replace('T', ' ');
+				if (i==0)
+					x = '<div class="row">';
+				x+='<div class="col-4">'+'<center>'+'<a href=/media/'+all_images[i].image+'>';
+				x+= '<img src="/media/'+all_images[i].image+'" width="120" height="160"><br>';
+				 x+=all_images[i].date+'<br></a></center></div>';
+				 if(i%3==2 && i!=0)
+				 	x+='</div><hr><div class="row">'
+				 if (i==all_images.length-1)
+				 	x+='</div>';
+				// window.location.reload(true);
+			}
+			console.log(x)
+			document.getElementById('images').innerHTML = x;
+		},
+
+	});
+}
+getImages();
+setInterval(getImages, 3000);
+
+
+
+
+
+</script>
+
+	<div id='images'>
+	</div>
+	
+	
+
+
+	
+{% endblock %}
